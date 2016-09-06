@@ -25,7 +25,7 @@ class EntrustSetupTables extends Migration
             $table->integer('user_id')->unsigned();
             $table->integer('role_id')->unsigned();
 
-            $table->primary(['user_id', 'role_id']);
+           // $table->primary(['user_id', 'role_id']);
         });
 
         // Create table for storing permissions
