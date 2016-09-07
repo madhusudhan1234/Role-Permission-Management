@@ -18,6 +18,7 @@ class CreateRolesUsersTable extends Migration
                 ->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('role_id')->references('id')->on('roles')
                 ->onUpdate('cascade')->onDelete('cascade');
+           // $table->primary(['user_id', 'role_id']);
         });
     }
 
@@ -29,8 +30,8 @@ class CreateRolesUsersTable extends Migration
     public function down()
     {
         Schema::table('role_user', function (Blueprint $table) {
-            $table->dropForeign('users_user_id_foreign');
-            $table->dropForeign('roles_role_id_foreign');
+            $table->dropForeign('role_user_user_id_foreign');
+            $table->dropForeign('role_user_role_id_foreign');
         });
     }
 }

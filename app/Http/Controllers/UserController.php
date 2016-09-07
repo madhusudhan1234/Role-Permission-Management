@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\User;
 use App\Role;
 use DB;
@@ -12,16 +11,25 @@ use Hash;
 class UserController extends Controller
 {
 
+    private $users;
+    private $roles;
+
+    public function __construct(User $users, Role $roles)
+    {
+        $this->users = $users;
+        $this->roles = $roles;
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $data = User::orderBy('id', 'DESC')->paginate(5);
-        return view('users.index', compact('data'))
-            ->with('i', ($request->input('page', 1) - 1) * 5);
+        $data = $this->users->all();
+
+        return view('users.index', compact('data'));
     }
 
     /**
@@ -31,7 +39,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        $roles = Role::lists('display_name', 'id');
+        $roles = $this->roles->lists('display_name','id');
+
         return view('users.create', compact('roles'));
     }
 
@@ -70,7 +79,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::find($id);
+        $user = $this->users->findOrFail($id);
+
         return view('users.show', compact('user'));
     }
 
@@ -82,11 +92,9 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $user = User::find($id);
-        $roles = Role::lists('display_name', 'id');
-        $userRole = $user->roles->lists('id', 'id')->toArray();
+        $user = $this->users->findOrFail($id);
 
-        return view('users.edit', compact('user', 'roles', 'userRole'));
+        return view('users.edit', compact('user', 'roles', 'user_role'));
     }
 
     /**
@@ -111,15 +119,11 @@ class UserController extends Controller
         } else {
             $input = array_except($input, array('password'));
         }
+        $user = $this->users->findOrFail($id);
 
-        $user = User::find($id);
-        $user->update($input);
-        DB::table('role_user')->where('user_id', $id)->delete();
+        $user->fill($input)->save();
 
-
-        foreach ($request->input('roles') as $key => $value) {
-            $user->attachRole($value);
-        }
+        $user->roles()->sync($request->input('roles'));
 
         return redirect()->route('users.index')
             ->with('success', 'User updated successfully');
@@ -133,7 +137,8 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        User::find($id)->delete();
+        $this->users->findOrFail($id)->delete();
+
         return redirect()->route('users.index')
             ->with('success', 'User deleted successfully');
     }

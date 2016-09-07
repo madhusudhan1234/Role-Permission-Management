@@ -24,8 +24,6 @@ class EntrustSetupTables extends Migration
         Schema::create('role_user', function (Blueprint $table) {
             $table->integer('user_id')->unsigned();
             $table->integer('role_id')->unsigned();
-
-           // $table->primary(['user_id', 'role_id']);
         });
 
         // Create table for storing permissions
@@ -41,8 +39,6 @@ class EntrustSetupTables extends Migration
         Schema::create('permission_role', function (Blueprint $table) {
             $table->integer('permission_id')->unsigned();
             $table->integer('role_id')->unsigned();
-
-            $table->primary(['permission_id', 'role_id']);
         });
     }
 

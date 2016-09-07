@@ -7,17 +7,17 @@
                 <h2>Items CRUD</h2>
             </div>
             <div class="pull-right">
-                @permission('item-create')
+{{--                @permission(['item-create'])
                 <a class="btn btn-success" href="{{ route('itemCRUD2.create') }}"> Create New Item</a>
-                @endpermission
+                @endpermission--}}
             </div>
         </div>
-    </div>
+    </div>{{--
     @if ($message = Session::get('success'))
         <div class="alert alert-success">
             <p>{{ $message }}</p>
         </div>
-    @endif
+    @endif--}}
     <table class="table table-bordered">
         <tr>
             <th>No</th>
@@ -32,17 +32,16 @@
                 <td>{{ $item->description }}</td>
                 <td>
                     <a class="btn btn-info" href="{{ route('itemCRUD2.show',$item->id) }}">Show</a>
-                    @permission('item-edit')
+                    {{--@permission(['item-edit'])
                     <a class="btn btn-primary" href="{{ route('itemCRUD2.edit',$item->id) }}">Edit</a>
-                    @endpermission
-                    @permission('item-delete')
+                    @endpermission--}}{{--
+                    @permission(['item-delete'])
                     {!! Form::open(['method' => 'DELETE','route' => ['itemCRUD2.destroy', $item->id],'style'=>'display:inline']) !!}
                     {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
                     {!! Form::close() !!}
-                    @endpermission
+                    @endpermission--}}
                 </td>
             </tr>
         @endforeach
     </table>
-    {!! $items->render() !!}
 @endsection

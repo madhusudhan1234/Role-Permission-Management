@@ -18,6 +18,7 @@ class CreatePermissionsRolesTable extends Migration
                 ->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('role_id')->references('id')->on('roles')
                 ->onUpdate('cascade')->onDelete('cascade');
+           // $table->primary(['permission_id', 'role_id']);
         });
     }
 
@@ -30,7 +31,7 @@ class CreatePermissionsRolesTable extends Migration
     {
         Schema::table('permission_role', function (Blueprint $table) {
             $table->dropForeign('permission_role_permission_id_foreign');
-            $table->dropForeign('roles_role_id_foreign');
+            $table->dropForeign('permission_role_role_id_foreign');
         });
     }
 }

@@ -16,19 +16,18 @@ class RoleController extends Controller
      */
     public function index(Request $request)
     {
-        $roles = Role::orderBy('id', 'DESC')->paginate(5);
-        return view('roles.index', compact('roles'))
-            ->with('i', ($request->input('page', 1) - 1) * 5);
+        $roles = Role::orderBy('id', 'desc')->paginate(5);
+        return view('roles.index', compact('roles'));
     }
 
     /**
      * Show the form for creating a new resource.
      *
+     * @param Permission $permission
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Permission $permission)
     {
-        $permission = Permission::get();
         return view('roles.create', compact('permission'));
     }
 

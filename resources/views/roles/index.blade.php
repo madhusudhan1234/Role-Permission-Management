@@ -7,8 +7,8 @@
                 <h2>Role Management</h2>
             </div>
             <div class="pull-right">
-                @permission('role-create')
-                <a class="btn btn-success" href="{{ route('roles.create') }}"> Create New Role</a>
+                @permission(['role-create'])
+                    <a class="btn btn-success" href="{{ route('roles.create') }}"> Create New Role</a>
                 @endpermission
             </div>
         </div>
@@ -27,19 +27,20 @@
         </tr>
         @foreach ($roles as $key => $role)
             <tr>
-                <td>{{ ++$i }}</td>
+                <td>1</td>
                 <td>{{ $role->display_name }}</td>
                 <td>{{ $role->description }}</td>
                 <td>
                     <a class="btn btn-info" href="{{ route('roles.show',$role->id) }}">Show</a>
-                    @permission('role-edit')
-                    <a class="btn btn-primary" href="{{ route('roles.edit',$role->id) }}">Edit</a>
+                    @permission(['role-edit'])
+                        <a class="btn btn-primary" href="{{ route('roles.edit',$role->id) }}">Edit</a>
                     @endpermission
-                    @permission('role-delete')
-                    {!! Form::open(['method' => 'DELETE','route' => ['roles.destroy', $role->id],'style'=>'display:inline']) !!}
-                    {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
-                    {!! Form::close() !!}
+                    @permission(['role-delete'])
+                        {!! Form::open(['method' => 'DELETE','route' => ['roles.destroy', $role->id],'style'=>'display:inline']) !!}
+                            {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
+                        {!! Form::close() !!}
                     @endpermission
+
                 </td>
             </tr>
         @endforeach
